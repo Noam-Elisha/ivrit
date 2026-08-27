@@ -1,0 +1,7 @@
+node_modules/
+_un/
+_rt.txt
+_tmp.js
+*.pdf
+page-*.jpg
+__pycache__/

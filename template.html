@@ -1,0 +1,918 @@
+<title>Six Months of Ivrit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Frank+Ruhl+Libre:wght@300;400;500;700;900&display=swap">
+<style>
+:root{
+  --bg:#EEF0F3; --surface:#FFFFFF; --surface-2:#F7F8FA;
+  --ink:#16181D; --ink-2:#4C5361; --ink-3:#858D9B;
+  --line:#DEE2E9; --line-2:#EDF0F4;
+  --accent:#9E2B3F; --accent-ink:#9E2B3F; --accent-soft:#F7E9EC; --accent-line:#E8CDD3;
+  --tek:#2C5566; --tek-ink:#2C5566; --tek-soft:#E7EEF1; --tek-line:#C9DAE1;
+  --shadow:0 1px 2px rgba(20,24,32,.05), 0 8px 24px -12px rgba(20,24,32,.18);
+  --serif:"Frank Ruhl Libre", Georgia, "Times New Roman", serif;
+  --sans:"Archivo", "Helvetica Neue", Arial, sans-serif;
+  --rail-w:236px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1217; --surface:#171B22; --surface-2:#1D222B;
+    --ink:#E9ECF1; --ink-2:#A4ADBC; --ink-3:#6E7887;
+    --line:#272D38; --line-2:#20262F;
+    --accent:#E3849A; --accent-ink:#EC93A7; --accent-soft:#2B1A20; --accent-line:#43242C;
+    --tek:#83B6C7; --tek-ink:#93C3D3; --tek-soft:#15242B; --tek-line:#21343C;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 28px -14px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1217; --surface:#171B22; --surface-2:#1D222B;
+  --ink:#E9ECF1; --ink-2:#A4ADBC; --ink-3:#6E7887;
+  --line:#272D38; --line-2:#20262F;
+  --accent:#E3849A; --accent-ink:#EC93A7; --accent-soft:#2B1A20; --accent-line:#43242C;
+  --tek:#83B6C7; --tek-ink:#93C3D3; --tek-soft:#15242B; --tek-line:#21343C;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 28px -14px rgba(0,0,0,.7);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--sans); font-size:15px; line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{margin:0; font-family:var(--serif); font-weight:700; text-wrap:balance; line-height:1.2}
+p{margin:0}
+button{font:inherit; color:inherit; background:none; border:none; cursor:pointer}
+a{color:var(--accent-ink)}
+:focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:3px}
+.he{font-family:var(--serif); direction:rtl; unicode-bidi:isolate}
+.eyebrow{
+  font-size:10.5px; font-weight:700; letter-spacing:.13em; text-transform:uppercase;
+  color:var(--ink-3);
+}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- shell ---------- */
+.app{display:grid; grid-template-columns:var(--rail-w) minmax(0,1fr); min-height:100vh}
+
+/* ---------- rail ---------- */
+.rail{
+  border-right:1px solid var(--line); background:var(--surface);
+  position:sticky; top:0; height:100vh; overflow-y:auto; padding:22px 0 40px;
+}
+.brand{padding:0 20px 18px; border-bottom:1px solid var(--line-2); margin-bottom:14px}
+.brand h1{font-size:21px; letter-spacing:-.01em}
+.brand .sub{font-size:11.5px; color:var(--ink-3); margin-top:5px; letter-spacing:.02em}
+.rail-sec{padding:0 20px; margin-bottom:10px}
+.rail-sec .eyebrow{display:block; margin:16px 0 8px}
+.wk{
+  display:grid; grid-template-columns:30px 1fr; align-items:center; gap:8px;
+  padding:3px 20px; text-decoration:none; color:inherit;
+}
+.wk:hover{background:var(--surface-2)}
+.wk-n{font-size:11px; color:var(--ink-3); font-variant-numeric:tabular-nums; text-align:right}
+.dots{display:flex; gap:3px}
+.dot{
+  width:100%; height:16px; border-radius:3px; background:var(--line-2);
+  border:1px solid transparent; cursor:pointer; padding:0; flex:1;
+  transition:background .12s, transform .12s;
+}
+.dot:hover{transform:translateY(-1px)}
+.dot.lesson{background:var(--accent-soft); border-color:var(--accent-line)}
+.dot.past{background:var(--tek-soft); border-color:var(--tek-line)}
+.dot.review{background:var(--surface-2); border:1px dashed var(--line)}
+.dot.rest{background:transparent; border:1px solid var(--line-2)}
+.dot.lesson.done{background:var(--accent); border-color:var(--accent)}
+.dot.past.done{background:var(--tek); border-color:var(--tek)}
+.dot.review.done, .dot.rest.done{background:var(--ink-3); border-color:var(--ink-3)}
+.dot.cur{box-shadow:0 0 0 2px var(--surface), 0 0 0 3.5px var(--ink)}
+
+/* progress panel */
+.progress{padding:0 20px 16px; margin-bottom:6px; border-bottom:1px solid var(--line-2)}
+.prog-top{display:flex; align-items:baseline; gap:5px; margin-bottom:7px}
+.prog-n{font-size:20px; font-weight:700; font-variant-numeric:tabular-nums; color:var(--ink)}
+.prog-of{font-size:11.5px; color:var(--ink-3)}
+.bar{height:5px; border-radius:100px; background:var(--line-2); overflow:hidden}
+.bar-fill{height:100%; background:var(--accent); border-radius:100px; transition:width .3s}
+.prog-sub{font-size:11px; color:var(--ink-3); margin-top:7px; line-height:1.45}
+.continue{
+  margin-top:10px; width:100%; padding:6px 10px; border-radius:8px;
+  border:1px solid var(--line); background:var(--surface-2);
+  font-size:12px; font-weight:600; color:var(--ink-2); text-align:center;
+}
+.continue:hover{background:var(--surface); color:var(--ink); border-color:var(--ink-3)}
+
+/* done bar */
+.donebar{
+  display:flex; align-items:center; gap:13px; flex-wrap:wrap;
+  margin-top:34px; padding-top:20px; border-top:1px solid var(--line);
+}
+.btn-done{
+  padding:9px 18px; border-radius:9px; background:var(--ink); color:var(--bg);
+  font-size:13.5px; font-weight:600; border:1px solid var(--ink);
+}
+.btn-done:hover{opacity:.88}
+.btn-done.is-done{background:transparent; color:var(--ink-2); border-color:var(--line)}
+.btn-done.is-done:hover{border-color:var(--ink-3); color:var(--ink); opacity:1}
+.donehint{font-size:12.5px; color:var(--ink-3)}
+.btn-reset{
+  padding:7px 14px; border-radius:8px; border:1px solid var(--line);
+  background:var(--surface); font-size:13px; font-weight:600; color:var(--ink-2);
+}
+.btn-reset:hover{border-color:var(--accent); color:var(--accent-ink)}
+.saved-note{font-size:13px; color:var(--ink-3); margin-top:9px}
+.phase-tag{
+  display:inline-block; font-size:10px; font-weight:700; letter-spacing:.1em;
+  text-transform:uppercase; padding:2px 7px; border-radius:100px; margin-left:2px;
+}
+.phase-1{background:var(--accent-soft); color:var(--accent-ink); border:1px solid var(--accent-line)}
+.phase-2{background:var(--tek-soft); color:var(--tek-ink); border:1px solid var(--tek-line)}
+.legend{padding:14px 20px 0; border-top:1px solid var(--line-2); margin-top:16px}
+.legend-row{display:flex; align-items:center; gap:8px; font-size:11.5px; color:var(--ink-2); margin-top:7px}
+.legend-sw{width:16px; height:12px; border-radius:3px; flex:none}
+
+/* ---------- topbar ---------- */
+.topbar{
+  position:sticky; top:0; z-index:20; background:var(--bg);
+  border-bottom:1px solid var(--line); padding:12px 32px;
+  display:flex; align-items:center; gap:18px; flex-wrap:wrap;
+}
+.tabs{display:flex; gap:2px}
+.tab{
+  padding:6px 13px; border-radius:7px; font-size:13px; font-weight:600; color:var(--ink-2);
+}
+.tab:hover{background:var(--surface)}
+.tab[aria-selected="true"]{background:var(--ink); color:var(--bg)}
+.spacer{flex:1}
+.ctrl{
+  display:flex; align-items:center; gap:1px; background:var(--surface);
+  border:1px solid var(--line); border-radius:8px; padding:2px;
+}
+.ctrl button{padding:4px 10px; border-radius:6px; font-size:12.5px; font-weight:600; color:var(--ink-2)}
+.ctrl button:hover{background:var(--surface-2)}
+.ctrl button.on{background:var(--accent); color:#fff}
+:root[data-theme="dark"] .ctrl button.on, :root:not([data-theme="light"]) .ctrl button.on{color:#12151A}
+.daynav{display:flex; align-items:center; gap:8px}
+.daynav button{
+  width:30px; height:30px; border-radius:8px; border:1px solid var(--line);
+  background:var(--surface); font-size:15px; line-height:1; color:var(--ink-2);
+}
+.daynav button:hover{background:var(--surface-2); color:var(--ink)}
+.daynav input{
+  width:58px; padding:5px 8px; border-radius:8px; border:1px solid var(--line);
+  background:var(--surface); color:var(--ink); font:inherit; font-size:13px;
+  text-align:center; font-variant-numeric:tabular-nums;
+}
+
+/* ---------- main ---------- */
+main{min-width:0}
+.view{display:none; padding:28px 32px 90px; max-width:920px}
+.view.on{display:block}
+
+/* day header */
+.dayhead{margin-bottom:26px}
+.dayhead .kicker{display:flex; align-items:center; gap:10px; margin-bottom:9px; flex-wrap:wrap}
+.dayhead h2{font-size:32px; letter-spacing:-.015em; margin-bottom:7px}
+.dayhead .lede{color:var(--ink-2); font-size:14.5px; max-width:62ch}
+.chips{display:flex; gap:7px; flex-wrap:wrap; margin-top:14px}
+.chip{
+  font-size:11.5px; font-weight:600; padding:3px 10px; border-radius:100px;
+  background:var(--surface); border:1px solid var(--line); color:var(--ink-2);
+}
+
+/* section blocks */
+.block{margin-bottom:34px}
+.block-head{
+  display:flex; align-items:baseline; gap:11px; margin-bottom:14px;
+  padding-bottom:9px; border-bottom:1px solid var(--line);
+}
+.block-head h3{font-size:17px}
+.block-head .count{font-size:12px; color:var(--ink-3); font-variant-numeric:tabular-nums}
+.block-head .rule{flex:1}
+
+/* word card */
+.cards{display:flex; flex-direction:column; gap:11px}
+.card{
+  background:var(--surface); border:1px solid var(--line); border-radius:12px;
+  padding:16px 18px; box-shadow:var(--shadow);
+  border-left:3px solid var(--accent);
+}
+.card.rev{border-left-color:var(--tek); box-shadow:none}
+.w-top{display:flex; gap:18px; align-items:flex-start; flex-wrap:wrap}
+.w-heb{
+  font-family:var(--serif); font-size:28px; font-weight:700; line-height:1.45;
+  direction:rtl; unicode-bidi:isolate; letter-spacing:.01em;
+  flex:0 1 auto; min-width:0; max-width:100%;
+}
+.w-mid{flex:1 1 180px; min-width:0}
+.w-mn, .ex-en, .ex-tr, .lede{overflow-wrap:break-word}
+.w-en{font-family:var(--serif); font-size:18px; font-weight:700; line-height:1.3}
+.w-tr{font-size:13.5px; color:var(--accent-ink); font-weight:600; margin-top:2px}
+.card.rev .w-tr{color:var(--tek-ink)}
+.w-sub{font-size:12.5px; color:var(--ink-3); margin-top:4px}
+.w-sub .he{font-size:14px}
+.w-mn{
+  margin-top:13px; padding-top:12px; border-top:1px solid var(--line-2);
+  font-size:13.5px; color:var(--ink-2); line-height:1.6;
+}
+.w-mn b{color:var(--ink); font-weight:600}
+.tagline{
+  display:inline-block; font-size:9.5px; font-weight:700; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--accent-ink); margin-right:8px;
+  vertical-align:1px;
+}
+.card.rev .tagline{color:var(--tek-ink)}
+.w-ex{
+  margin-top:12px; padding:11px 14px; background:var(--surface-2);
+  border-radius:8px; border:1px solid var(--line-2);
+}
+.ex-he{font-family:var(--serif); font-size:19px; direction:rtl; unicode-bidi:isolate; line-height:1.7}
+.ex-tr{font-size:13px; color:var(--ink-2); font-style:italic; margin-top:3px}
+.ex-en{font-size:13px; color:var(--ink-3); margin-top:3px}
+
+/* quiz masking */
+.quiz-he .w-heb, .quiz-he .ex-he,
+.quiz-en .w-en, .quiz-en .w-tr, .quiz-en .ex-en, .quiz-en .ex-tr{
+  filter:blur(6px); cursor:pointer; transition:filter .15s; user-select:none;
+}
+.quiz-he .revealed .w-heb, .quiz-he .revealed .ex-he,
+.quiz-en .revealed .w-en, .quiz-en .revealed .w-tr,
+.quiz-en .revealed .ex-en, .quiz-en .revealed .ex-tr{filter:none; user-select:auto}
+.quiz-he .card:not(.revealed), .quiz-en .card:not(.revealed){cursor:pointer}
+
+/* review groups */
+.revgroup{margin-bottom:20px}
+.revgroup-head{
+  display:flex; align-items:center; gap:9px; margin-bottom:9px;
+}
+.revgroup-head .when{
+  font-size:10.5px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--tek-ink); background:var(--tek-soft); border:1px solid var(--tek-line);
+  padding:2px 9px; border-radius:100px;
+}
+.revgroup-head .title{font-size:13px; color:var(--ink-2); font-weight:500}
+.rows{
+  background:var(--surface); border:1px solid var(--line); border-radius:11px; overflow:hidden;
+}
+.row{
+  display:grid; grid-template-columns:minmax(120px,1.1fr) minmax(110px,.9fr) minmax(130px,1fr);
+  gap:14px; align-items:center; padding:9px 15px; border-top:1px solid var(--line-2);
+}
+.row:first-child{border-top:none}
+.row:hover{background:var(--surface-2)}
+.row > *{min-width:0}
+.row .r-he{font-family:var(--serif); font-size:20px; direction:rtl; unicode-bidi:isolate; line-height:1.5}
+.row .r-en{font-size:13.5px; font-weight:600}
+.row .r-tr{font-size:12.5px; color:var(--ink-2)}
+.quiz-he .row .r-he, .quiz-en .row .r-en, .quiz-en .row .r-tr{filter:blur(5px); cursor:pointer; transition:filter .15s}
+.quiz-he .row.revealed .r-he, .quiz-en .row.revealed .r-en, .quiz-en .row.revealed .r-tr{filter:none}
+
+/* callout */
+.note{
+  background:var(--surface); border:1px solid var(--line); border-left:3px solid var(--tek);
+  border-radius:11px; padding:15px 18px; font-size:14px; color:var(--ink-2); line-height:1.65;
+}
+.note b{color:var(--ink)}
+.note + .note{margin-top:11px}
+.note.warm{border-left-color:var(--accent)}
+
+/* past-tense table */
+.ptable{width:100%; border-collapse:collapse; font-size:14px; margin-top:4px}
+.ptable th{
+  text-align:left; font-size:10.5px; letter-spacing:.11em; text-transform:uppercase;
+  color:var(--ink-3); font-weight:700; padding:0 12px 7px 0; border-bottom:1px solid var(--line);
+}
+.ptable td{padding:8px 12px 8px 0; border-bottom:1px solid var(--line-2); vertical-align:middle}
+.ptable td:first-child{color:var(--ink-2); font-size:13px; white-space:nowrap}
+.ptable td.tr{font-weight:600; color:var(--accent-ink)}
+.ptable td.hb{font-family:var(--serif); font-size:20px; direction:rtl; unicode-bidi:isolate; text-align:right}
+.tablewrap{overflow-x:auto; background:var(--surface); border:1px solid var(--line); border-radius:11px; padding:15px 18px}
+
+/* plan view */
+.planweek{
+  background:var(--surface); border:1px solid var(--line); border-radius:12px;
+  padding:16px 18px; margin-bottom:11px;
+}
+.planweek h4{font-size:15px; margin-bottom:3px}
+.planweek .wmeta{font-size:11.5px; color:var(--ink-3); margin-bottom:11px}
+.planlist{display:flex; flex-direction:column; gap:5px}
+.planday{
+  display:grid; grid-template-columns:74px 1fr auto; gap:12px; align-items:center;
+  padding:6px 9px; border-radius:7px; font-size:13.5px; text-align:left; width:100%;
+}
+.planday:hover{background:var(--surface-2)}
+.planday .pd-d{font-size:11px; color:var(--ink-3); font-variant-numeric:tabular-nums}
+.planday .pd-t{font-weight:600}
+.planday .pd-c{font-size:11.5px; color:var(--ink-3)}
+
+/* browse */
+.searchbar{
+  width:100%; max-width:420px; padding:9px 14px; border-radius:9px;
+  border:1px solid var(--line); background:var(--surface); color:var(--ink);
+  font:inherit; font-size:14px; margin-bottom:20px;
+}
+.catblock{margin-bottom:28px}
+.catblock h3{font-size:16px; margin-bottom:3px}
+.catblock .cmeta{font-size:11.5px; color:var(--ink-3); margin-bottom:10px}
+
+/* about */
+.prose{max-width:64ch}
+.prose h3{font-size:19px; margin:30px 0 9px}
+.prose h3:first-child{margin-top:0}
+.prose p{margin-bottom:12px; color:var(--ink-2); font-size:14.5px; line-height:1.7}
+.prose ul{margin:0 0 14px; padding-left:20px; color:var(--ink-2); font-size:14.5px; line-height:1.7}
+.prose li{margin-bottom:5px}
+.prose b{color:var(--ink)}
+
+.empty{color:var(--ink-3); font-size:14px; padding:20px 0}
+
+@media (max-width:880px){
+  :root{--rail-w:0px}
+  .app{grid-template-columns:1fr}
+  .rail{display:none}
+  .view{padding:22px 18px 80px}
+  .topbar{padding:10px 18px; gap:12px}
+  .dayhead h2{font-size:26px}
+  .w-heb{font-size:24px}
+  .row{grid-template-columns:1fr 1fr; gap:8px}
+  .row .r-tr{grid-column:1 / -1}
+}
+@media (prefers-reduced-motion: reduce){
+  *{animation:none !important; transition:none !important}
+}
+</style>
+
+<div class="app">
+  <aside class="rail">
+    <div class="brand">
+      <h1>Six Months of Ivrit</h1>
+      <div class="sub">503 words &middot; 26 weeks &middot; 15–20 min a day</div>
+    </div>
+    <div class="progress" id="progress"></div>
+    <div class="rail-sec">
+      <span class="eyebrow">Phase 1 &mdash; Vocabulary &amp; present tense</span>
+    </div>
+    <div id="rail-p1"></div>
+    <div class="rail-sec">
+      <span class="eyebrow">Phase 2 &mdash; Past tense</span>
+    </div>
+    <div id="rail-p2"></div>
+    <div class="legend">
+      <span class="eyebrow">Key</span>
+      <div class="legend-row"><span class="legend-sw" style="background:var(--accent-soft);border:1px solid var(--accent-line)"></span> New words</div>
+      <div class="legend-row"><span class="legend-sw" style="background:var(--tek-soft);border:1px solid var(--tek-line)"></span> Past tense</div>
+      <div class="legend-row"><span class="legend-sw" style="background:var(--surface-2);border:1px dashed var(--line)"></span> Week review</div>
+      <div class="legend-row"><span class="legend-sw" style="border:1px solid var(--line-2)"></span> Rest day</div>
+    </div>
+  </aside>
+
+  <main>
+    <div class="topbar">
+      <div class="tabs" role="tablist">
+        <button class="tab" role="tab" aria-selected="true" data-view="today">Today</button>
+        <button class="tab" role="tab" aria-selected="false" data-view="plan">Full plan</button>
+        <button class="tab" role="tab" aria-selected="false" data-view="browse">All words</button>
+        <button class="tab" role="tab" aria-selected="false" data-view="about">How it works</button>
+      </div>
+      <div class="spacer"></div>
+      <div class="ctrl" id="quizctrl" title="Cover one side and tap a card to reveal">
+        <button data-q="off" class="on">Study</button>
+        <button data-q="he">Hide Hebrew</button>
+        <button data-q="en">Hide English</button>
+      </div>
+      <div class="daynav">
+        <button id="prev" aria-label="Previous day">&#8249;</button>
+        <input id="daybox" type="number" min="1" max="182" value="1" aria-label="Day number">
+        <button id="next" aria-label="Next day">&#8250;</button>
+      </div>
+    </div>
+
+    <section class="view on" id="view-today"></section>
+    <section class="view" id="view-plan"></section>
+    <section class="view" id="view-browse"></section>
+    <section class="view" id="view-about">
+      <div class="prose">
+        <h3>The shape of the six months</h3>
+        <p>Everything from your four spreadsheets — <b>503 words</b> in total: 134 verbs, 254 nouns, 83 adjectives and 33 connectors — is laid out across 26 weeks. Nothing has been left out.</p>
+        <p><b>Weeks 1–21 (Phase 1)</b> cover all 503 words. Verbs appear in the infinitive (the root form) and the present tense only, exactly as you asked — the past tense is deliberately held back so you're not juggling two tenses while the vocabulary is still new.</p>
+        <p><b>Weeks 22–26 (Phase 2)</b> take the past tense on directly, taught by <i>pattern</i> rather than word by word. Once you can hear that <i>kotev → katavti</i> and <i>soger → sagarti</i> are the same move, all 134 verbs open up at once. Review of the Phase 1 vocabulary continues right through, so nothing goes cold.</p>
+
+        <h3>A week</h3>
+        <ul>
+          <li><b>Days 1–5</b> — five new words, grouped by theme, plus tiered review. 15–20 minutes.</li>
+          <li><b>Day 6</b> — a review of the week's 25 words, in quiz mode. 10 minutes.</li>
+          <li><b>Day 7</b> — off. Or five minutes on whatever felt shaky.</li>
+        </ul>
+
+        <h3>How the review is spaced</h3>
+        <p>Each study day brings back five earlier sets at expanding intervals: roughly <b>1 day, 3 days, 1 week, 3 weeks and 2 months</b> after you first met them. That's the spacing that research on forgetting keeps landing on — you revisit a word just as it's starting to slip, which is exactly when the repetition does the most work.</p>
+        <p>In practice that's about 25 review items on top of the 5 new ones. The oldest tier is a quick pass — if the meaning comes back within a second or two, move on. Don't linger.</p>
+
+        <h3>Using quiz mode</h3>
+        <p>The <b>Hide Hebrew</b> and <b>Hide English</b> buttons in the toolbar blur one side of every card. Tap a card to reveal it. Hiding the English (so you're producing meaning from Hebrew) is easier; hiding the Hebrew (producing Hebrew from English) is harder and worth more — use it on the older review tiers once the words are familiar.</p>
+
+        <h3>The mnemonics</h3>
+        <p>Every word has an association, and they come in three kinds: <b>sound-alikes</b> (<i>tzarich</i> — you need to be <i>rich</i>), <b>root connections</b> that link a new word to one you already know (<i>sefer</i> book → <i>sofer</i> writer → <i>sifriya</i> library), and <b>cultural anchors</b> (<i>Rosh</i> Hashanah is the <i>head</i> of the year). The root connections are the ones that compound: Hebrew is built from three-letter roots, and every one you recognise makes the next dozen words cheaper to learn.</p>
+
+        <h3>Notes on the source spreadsheets</h3>
+        <p>A handful of rows had small errors or gaps, which have been corrected here:</p>
+        <ul>
+          <li><b>Hurt</b> mixed two different verbs — <i>lehach'iv</i> and <i>lifgoa</i>. Kept as <i>lifgoa / pogea</i>, the everyday one.</li>
+          <li><b>Cuddle</b> listed <i>lefanek</i> in the present but the past of <i>lechabek</i> (to hug). Kept as <i>lefanek</i> throughout.</li>
+          <li><b>Return (something)</b> had the forms for <i>lachzor</i> (to go back). Corrected to <i>lehachzir / machzir</i>.</li>
+          <li><b>Garden</b> listed the noun <i>gina</i> as its infinitive. Corrected to <i>leganen</i>.</li>
+          <li><b>Need</b> mixed <i>tzarich</i> with the more formal <i>lehizdakek</i>. Kept as <i>tzarich</i>.</li>
+          <li><b>Enjoy</b> had the past as <i>heneti</i>; the correct form is <i>nehe'neti</i>.</li>
+          <li><b>Frustrated</b> was <i>mevutsal</i>; the standard word is <i>metuskal</i>.</li>
+          <li><b>Most</b> was written <i>hachat</i>; it's <i>hachi</i> (for superlatives) or <i>rov</i> (for "the majority").</li>
+          <li><b>Window</b> was missing its Hebrew: <span class="he">חַלּוֹן</span>.</li>
+          <li>Several rows had stray Latin letters inside Hebrew words (<i>Bikas-nu</i>, <i>Shin-iti</i>, <i>Hirgash-ti</i>) — retyped cleanly.</li>
+        </ul>
+
+        <h3>Your progress is saved</h3>
+        <p>The app remembers where you were, which days you've marked done, and whether quiz mode was on. Close the tab, come back next week, and it opens exactly where you left off — the <b>Continue</b> button in the sidebar jumps straight to your first unfinished day.</p>
+        <p>This is stored in the browser itself, not in an account, which means two things: nothing is uploaded anywhere, and progress doesn't follow you between devices. If you'll study on both a phone and a laptop, pick one as the place you tick days off.</p>
+        <p><button class="btn-reset" id="reset">Clear saved progress</button></p>
+        <p class="saved-note">Bookmark this page, or add it to your home screen, and it behaves like an app.</p>
+
+        <h3>If you fall behind</h3>
+        <p>Don't restart and don't try to catch up by doubling. Just carry on from where you stopped — the spaced review will pull the missed words back through on its own within a couple of weeks. Missing days is expected and the schedule is built to absorb it.</p>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+/*__DATA__*/
+
+/* ---------------- build the curriculum ---------------- */
+var LESSONS = [].concat(VERBS_A, NOUNS_A, ADJS, VERBS_B, NOUNS_B, FUNCS, NOUNS_C, NOUNS_D);
+
+/* Interleave so no long stretch is all one part of speech. Deal the
+   thematic blocks out in rotation instead of running them end to end. */
+(function interleave(){
+  var pools = [VERBS_A.concat(VERBS_B), NOUNS_A.concat(NOUNS_B, NOUNS_C, NOUNS_D), ADJS, FUNCS];
+  var order = [], idx = [0,0,0,0];
+  // ratio roughly matches pool sizes: verbs 27, nouns 51, adj 17, func 6
+  var pattern = [0,1,2,1,0,1,3,1,0,1,2,1,0,1,1,0,2,1,1,1];
+  var guard = 0;
+  while (order.length < pools[0].length + pools[1].length + pools[2].length + pools[3].length && guard++ < 5000){
+    for (var k=0;k<pattern.length;k++){
+      var p = pattern[k];
+      if (idx[p] < pools[p].length){ order.push(pools[p][idx[p]++]); }
+      else {
+        for (var alt=0; alt<4; alt++){ if (idx[alt] < pools[alt].length){ order.push(pools[alt][idx[alt]++]); break; } }
+      }
+      if (order.length >= pools[0].length+pools[1].length+pools[2].length+pools[3].length) break;
+    }
+  }
+  LESSONS = order;
+})();
+
+var L1 = LESSONS.length;          // phase 1 lessons
+var P2 = PAST.length;             // phase 2 sessions
+var WEEKS = 26;
+
+/* Build 182 days */
+var DAYS = [];
+(function buildDays(){
+  var li = 0, pi = 0;
+  for (var w = 1; w <= WEEKS; w++){
+    var phase2 = w >= 22;
+    for (var d = 1; d <= 7; d++){
+      var day = {week:w, dow:d, n:DAYS.length+1};
+      if (d === 6) day.type = 'weekreview';
+      else if (d === 7) day.type = 'rest';
+      else if (phase2){
+        if (pi < P2){ day.type = 'past'; day.pi = pi++; }
+        else day.type = 'consolidate';
+      } else {
+        if (li < L1){ day.type = 'lesson'; day.li = li++; }
+        else day.type = 'consolidate';
+      }
+      DAYS.push(day);
+    }
+  }
+})();
+
+var lessonDayOf = {};   // lesson index -> day number
+DAYS.forEach(function(d){ if (d.type === 'lesson') lessonDayOf[d.li] = d.n; });
+
+/* Expanding review intervals, expressed in lessons back (5 lessons ≈ 1 week) */
+var TIERS = [
+  {back:1,  when:'Yesterday',      note:'first recall — the one that matters most'},
+  {back:2,  when:'3 days ago',     note:'second pass'},
+  {back:5,  when:'Last week',      note:'should be getting easier'},
+  {back:15, when:'3 weeks ago',    note:'quick pass — don’t linger'},
+  {back:40, when:'2 months ago',   note:'quick pass — just the meaning'}
+];
+
+function reviewFor(day){
+  var out = [];
+  if (day.type === 'lesson'){
+    TIERS.forEach(function(t){
+      var i = day.li - t.back;
+      if (i >= 0) out.push({tier:t, lesson:LESSONS[i], idx:i});
+    });
+  } else if (day.type === 'weekreview'){
+    var got = 0;
+    DAYS.forEach(function(d){
+      if (d.week === day.week && d.type === 'lesson'){
+        out.push({tier:{when:'This week', note:''}, lesson:LESSONS[d.li], idx:d.li});
+        got++;
+      }
+    });
+    if (!got){
+      // Phase 2 and consolidation weeks have no new lessons — rotate through Phase 1 instead
+      var s = ((day.week * 13) % Math.max(1, L1 - 5));
+      for (var m = 0; m < 5; m++){
+        var mi = (s + m) % L1;
+        out.push({tier:{when:'Mixed recall', note:''}, lesson:LESSONS[mi], idx:mi});
+      }
+    }
+  } else if (day.type === 'past'){
+    // rotate through all Phase 1 lessons across the 25 past-tense days
+    var per = Math.ceil(L1 / P2);
+    for (var k = 0; k < per; k++){
+      var i = day.pi * per + k;
+      if (i < L1) out.push({tier:{when:'Phase 1 recall', note:''}, lesson:LESSONS[i], idx:i});
+    }
+  } else if (day.type === 'consolidate'){
+    var start = ((day.n * 7) % Math.max(1, L1 - 6));
+    for (var j = 0; j < 6; j++){
+      var ix = (start + j) % L1;
+      out.push({tier:{when:'Mixed recall', note:''}, lesson:LESSONS[ix], idx:ix});
+    }
+  }
+  return out;
+}
+
+/* ---------------- rendering ---------------- */
+var esc = function(s){ return String(s == null ? '' : s).replace(/[&<>]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]; }); };
+
+/* ---------------- saved progress ----------------
+   Everything lives under one key. localStorage can throw (private
+   browsing, sandboxed frames), so every access is guarded and the app
+   stays fully usable — it just forgets between visits. */
+var KEY = 'ivrit-v1';
+var canSave = true;
+var state = {day:1, quiz:'off', view:'today', done:[]};
+
+(function load(){
+  var raw = null;
+  try { raw = localStorage.getItem(KEY); }
+  catch(e){ canSave = false; return; }   // storage unavailable — run without saving
+  try {
+    if (raw){
+      var s = JSON.parse(raw);           // garbage here just means "start fresh"
+      if (s && typeof s === 'object'){
+        state.day  = Math.max(1, Math.min(182, parseInt(s.day, 10) || 1));
+        state.quiz = (s.quiz === 'he' || s.quiz === 'en') ? s.quiz : 'off';
+        state.view = ['today','plan','browse','about'].indexOf(s.view) > -1 ? s.view : 'today';
+        state.done = Array.isArray(s.done) ? s.done.filter(function(n){ return n >= 1 && n <= 182; }) : [];
+      }
+    } else {
+      // migrate from the first version, which stored just the day number
+      var old = parseInt(localStorage.getItem('ivrit-day'), 10);
+      if (old) state.day = Math.max(1, Math.min(182, old));
+    }
+  } catch(e){ state = {day:1, quiz:'off', view:'today', done:[]}; }
+})();
+
+var doneSet = {};
+state.done.forEach(function(n){ doneSet[n] = true; });
+
+function save(){
+  if (!canSave) return;
+  try {
+    state.done = Object.keys(doneSet).map(Number).sort(function(a,b){ return a-b; });
+    localStorage.setItem(KEY, JSON.stringify(state));
+  } catch(e){ canSave = false; }
+}
+
+function firstUndone(){
+  for (var i = 1; i <= DAYS.length; i++) if (!doneSet[i]) return i;
+  return DAYS.length;
+}
+function wordsLearned(){
+  var n = 0;
+  DAYS.forEach(function(d){ if (d.type === 'lesson' && doneSet[d.n]) n += LESSONS[d.li].w.length; });
+  return n;
+}
+
+var cur = state.day, quiz = state.quiz, view = state.view;
+
+function wordCard(w, isRev){
+  var sub = '';
+  if (w.inf) sub = 'infinitive &middot; ' + esc(w.inf) + ' <span class="he">' + esc(w.infHe) + '</span>';
+  else if (w.pl && w.pl !== '—') sub = 'plural &middot; ' + esc(w.pl) + ' <span class="he">' + esc(w.plHe) + '</span>';
+  return '<article class="card' + (isRev ? ' rev' : '') + '">' +
+    '<div class="w-top">' +
+      '<div class="w-heb">' + esc(w.he) + '</div>' +
+      '<div class="w-mid">' +
+        '<div class="w-en">' + esc(w.en) + '</div>' +
+        '<div class="w-tr">' + esc(w.tr) + '</div>' +
+        (sub ? '<div class="w-sub">' + sub + '</div>' : '') +
+      '</div>' +
+    '</div>' +
+    (w.mn ? '<p class="w-mn"><span class="tagline">remember it</span>' + esc(w.mn) + '</p>' : '') +
+    (w.ex ? '<div class="w-ex">' +
+        '<div class="ex-he">' + esc(w.ex[1]) + '</div>' +
+        '<div class="ex-tr">' + esc(w.ex[0]) + '</div>' +
+        '<div class="ex-en">' + esc(w.ex[2]) + '</div>' +
+      '</div>' : '') +
+  '</article>';
+}
+
+function revRows(lesson){
+  return '<div class="rows">' + lesson.w.map(function(w){
+    return '<div class="row"><div class="r-he he">' + esc(w.he) + '</div>' +
+           '<div class="r-en">' + esc(w.en) + '</div>' +
+           '<div class="r-tr">' + esc(w.tr) + '</div></div>';
+  }).join('') + '</div>';
+}
+
+function pastBlock(p){
+  var h = '';
+  if (p.table){
+    h += '<div class="tablewrap"><table class="ptable"><thead><tr><th>Person</th><th>Transliteration</th><th style="text-align:right">Hebrew</th></tr></thead><tbody>' +
+      p.table.map(function(r){
+        return '<tr><td>' + esc(r[0]) + '</td><td class="tr">' + esc(r[1]) + '</td><td class="hb">' + esc(r[2]) + '</td></tr>';
+      }).join('') + '</tbody></table></div>';
+  }
+  if (p.verbs && p.verbs.length){
+    h += '<div class="tablewrap" style="margin-top:11px"><table class="ptable"><thead><tr><th>Verb</th><th>Ani (I)</th><th style="text-align:right">Hebrew</th><th>Hu (he)</th><th style="text-align:right">Hebrew</th></tr></thead><tbody>' +
+      p.verbs.map(function(v){
+        return '<tr><td>' + esc(v[0]) + '</td><td class="tr">' + esc(v[1]) + '</td><td class="hb">' + esc(v[2]) +
+               '</td><td class="tr">' + esc(v[3]) + '</td><td class="hb">' + esc(v[4]) + '</td></tr>';
+      }).join('') + '</tbody></table></div>';
+  }
+  return h;
+}
+
+function renderToday(){
+  var day = DAYS[cur - 1];
+  var el = document.getElementById('view-today');
+  var phase = day.week >= 22 ? 2 : 1;
+  var h = '';
+
+  var hasNew = DAYS.some(function(d){ return d.week === day.week && d.type === 'lesson'; });
+  var titles = {
+    lesson: LESSONS[day.li] ? LESSONS[day.li].t : '',
+    past: PAST[day.pi] ? PAST[day.pi].t : '',
+    weekreview: hasNew ? 'Week ' + day.week + ' review' : 'Mixed recall',
+    rest: 'Rest day',
+    consolidate: day.week === 21 ? 'Consolidation week' : 'Consolidation'
+  };
+  var ledes = {
+    lesson: 'Five new words, then the review tiers below. Read each Hebrew word aloud — including the example sentence — before moving on.',
+    past: 'A past-tense pattern to absorb, plus a rotating recall pass over your Phase 1 vocabulary.',
+    weekreview: hasNew
+      ? 'No new words today. Turn on a quiz mode in the toolbar and work through everything from this week.'
+      : 'No new words. A wider sweep back through earlier material — quiz mode on, quick passes only.',
+    rest: 'Nothing scheduled. If you want five minutes, skim yesterday’s words — otherwise close the tab.',
+    consolidate: day.week === 21
+      ? 'All 503 words are now behind you. This week is a deliberate pause before the past tense — no new material, just recall over the whole vocabulary.'
+      : 'A catch-up day. No new material — use it to close gaps, or take it off if you’re on track.'
+  };
+
+  var est = day.type === 'lesson' ? '15–20 min'
+          : day.type === 'past' ? '15–20 min'
+          : day.type === 'weekreview' ? '10 min'
+          : day.type === 'rest' ? 'optional' : '10 min';
+
+  h += '<div class="dayhead">' +
+       '<div class="kicker">' +
+         '<span class="eyebrow">Week ' + day.week + ' &middot; Day ' + day.dow + '</span>' +
+         '<span class="phase-tag phase-' + phase + '">Phase ' + phase + (phase === 1 ? ' &middot; Present tense' : ' &middot; Past tense') + '</span>' +
+       '</div>' +
+       '<h2>' + esc(titles[day.type]) + '</h2>' +
+       '<p class="lede">' + ledes[day.type] + '</p>' +
+       '<div class="chips"><span class="chip">Day ' + day.n + ' of 182</span>' +
+       '<span class="chip">' + est + '</span>' +
+       (day.type === 'lesson' ? '<span class="chip">' + esc(LESSONS[day.li].c) + '</span>' : '') +
+       '</div></div>';
+
+  if (day.type === 'lesson'){
+    var L = LESSONS[day.li];
+    h += '<div class="block"><div class="block-head"><h3>New today</h3>' +
+         '<span class="count">' + L.w.length + ' words</span><span class="rule"></span></div>' +
+         '<div class="cards">' + L.w.map(function(w){ return wordCard(w, false); }).join('') + '</div></div>';
+  }
+
+  if (day.type === 'past'){
+    var P = PAST[day.pi];
+    h += '<div class="block"><div class="block-head"><h3>The pattern</h3><span class="rule"></span></div>' +
+         '<div class="note">' + esc(P.focus) + '</div>' +
+         pastBlock(P) +
+         (P.tip ? '<div class="note warm" style="margin-top:11px"><b>Watch out:</b> ' + esc(P.tip) + '</div>' : '') +
+         (P.ex ? '<div class="w-ex" style="margin-top:11px"><div class="ex-he">' + esc(P.ex[1]) + '</div>' +
+                 '<div class="ex-tr">' + esc(P.ex[0]) + '</div><div class="ex-en">' + esc(P.ex[2]) + '</div></div>' : '') +
+         '</div>';
+  }
+
+  if (day.type === 'rest'){
+    h += '<div class="note">Rest is part of the schedule, not a failure of it. Memory consolidates in the gaps — a day off costs you almost nothing and makes tomorrow cheaper.</div>';
+  }
+
+  var rev = reviewFor(day);
+  if (rev.length){
+    var total = rev.reduce(function(a, r){ return a + r.lesson.w.length; }, 0);
+    h += '<div class="block"><div class="block-head"><h3>Review</h3>' +
+         '<span class="count">' + total + ' words</span><span class="rule"></span></div>';
+    rev.forEach(function(r){
+      h += '<div class="revgroup"><div class="revgroup-head">' +
+           '<span class="when">' + esc(r.tier.when) + '</span>' +
+           '<span class="title">' + esc(r.lesson.t) + (r.tier.note ? ' &mdash; ' + r.tier.note : '') + '</span>' +
+           '</div>' + revRows(r.lesson) + '</div>';
+    });
+    h += '</div>';
+  }
+
+  if (day.type === 'weekreview'){
+    h += '<div class="note warm"><b>Then produce, don’t just recognise.</b> Write five sentences using this week’s words — or say them out loud. Producing a word is what moves it from "I know that one" to actually available when you need it.</div>';
+  }
+
+  var isDone = !!doneSet[cur];
+  h += '<div class="donebar">' +
+       '<button class="btn-done' + (isDone ? ' is-done' : '') + '" id="markdone">' +
+       (isDone ? '✓ Done — tap to undo' : 'Mark day ' + cur + ' done') + '</button>' +
+       '<span class="donehint">' +
+       (isDone ? 'Marked complete.' : (cur < DAYS.length ? 'Then straight on to day ' + (cur + 1) + '.' : 'Last day of the plan.')) +
+       '</span></div>';
+
+  el.innerHTML = h;
+  document.getElementById('daybox').value = cur;
+  var md = document.getElementById('markdone');
+  if (md) md.addEventListener('click', function(){
+    if (doneSet[cur]){ delete doneSet[cur]; save(); renderToday(); }
+    else { doneSet[cur] = true; save(); if (cur < DAYS.length) setDay(cur + 1); else renderToday(); }
+  });
+  renderRail();
+}
+
+function renderProgress(){
+  var done = Object.keys(doneSet).length;
+  var pct = Math.round(done / DAYS.length * 100);
+  var next = firstUndone();
+  var learned = wordsLearned();
+  document.getElementById('progress').innerHTML =
+    '<div class="prog-top"><span class="prog-n">' + done + '</span>' +
+    '<span class="prog-of">of ' + DAYS.length + ' days done &middot; ' + pct + '%</span></div>' +
+    '<div class="bar"><div class="bar-fill" style="width:' + pct + '%"></div></div>' +
+    '<div class="prog-sub">' + learned + ' of 503 words learned' +
+    (canSave ? '' : '<br>Progress can’t be saved in this browser.') + '</div>' +
+    (done ? '<button class="continue" id="continue">Continue &rarr; day ' + next + '</button>' : '');
+  var c = document.getElementById('continue');
+  if (c) c.addEventListener('click', function(){ setDay(firstUndone()); });
+}
+
+function renderRail(){
+  renderProgress();
+  function weekRow(w){
+    var days = DAYS.filter(function(d){ return d.week === w; });
+    return '<div class="wk"><span class="wk-n num">' + w + '</span><div class="dots">' +
+      days.map(function(d){
+        var cls = d.type === 'lesson' ? 'lesson' : d.type === 'past' ? 'past'
+                : d.type === 'weekreview' ? 'review' : d.type === 'rest' ? 'rest' : 'review';
+        if (doneSet[d.n]) cls += ' done';
+        if (d.n === cur) cls += ' cur';
+        var t = 'Week ' + w + ', day ' + d.dow + (doneSet[d.n] ? ' — done' : '');
+        return '<button class="dot ' + cls + '" data-day="' + d.n + '" title="' + t + '"></button>';
+      }).join('') + '</div></div>';
+  }
+  var a = '', b = '';
+  for (var w = 1; w <= 21; w++) a += weekRow(w);
+  for (var w2 = 22; w2 <= 26; w2++) b += weekRow(w2);
+  document.getElementById('rail-p1').innerHTML = a;
+  document.getElementById('rail-p2').innerHTML = b;
+}
+
+function renderPlan(){
+  var h = '<div class="dayhead"><h2>The full 26 weeks</h2><p class="lede">Every session at a glance. Click any day to open it.</p></div>';
+  for (var w = 1; w <= WEEKS; w++){
+    var days = DAYS.filter(function(d){ return d.week === w; });
+    var newWords = days.reduce(function(a, d){ return a + (d.type === 'lesson' ? LESSONS[d.li].w.length : 0); }, 0);
+    var phase = w >= 22 ? 2 : 1;
+    var wlabel = w === 21 ? 'Consolidation week &middot; no new material'
+               : 'Phase ' + phase + (phase === 1 ? ' &middot; vocabulary &amp; present tense' : ' &middot; past tense');
+    h += '<div class="planweek"><h4>Week ' + w + '</h4>' +
+         '<div class="wmeta">' + wlabel +
+         (newWords ? ' &middot; ' + newWords + ' new words' : '') + '</div><div class="planlist">';
+    days.forEach(function(d){
+      var label = d.type === 'lesson' ? LESSONS[d.li].t
+                : d.type === 'past' ? PAST[d.pi].t
+                : d.type === 'weekreview' ? (newWords ? 'Week review — all 25 words' : 'Mixed recall')
+                : d.type === 'rest' ? 'Rest' : 'Consolidation — recall across all 503 words';
+      var cat = d.type === 'lesson' ? LESSONS[d.li].c : (d.type === 'past' ? 'Past tense' : '');
+      h += '<button class="planday" data-day="' + d.n + '">' +
+           '<span class="pd-d">Day ' + d.n + '</span>' +
+           '<span class="pd-t">' + esc(label) + '</span>' +
+           '<span class="pd-c">' + esc(cat) + '</span></button>';
+    });
+    h += '</div></div>';
+  }
+  document.getElementById('view-plan').innerHTML = h;
+}
+
+function renderBrowse(filter){
+  filter = (filter || '').toLowerCase().trim();
+  var groups = {};
+  LESSONS.forEach(function(L, i){
+    (groups[L.c] = groups[L.c] || []).push({L:L, i:i});
+  });
+  var h = '<div class="dayhead"><h2>All 503 words</h2><p class="lede">Everything from your four spreadsheets, grouped by category. Search in any language — English, transliteration or Hebrew.</p></div>' +
+    '<input class="searchbar" id="q" type="search" placeholder="Search words…" value="' + esc(filter) + '">';
+  var any = false;
+  var top = ['Verbs', 'Nouns', 'Adjectives', 'Connectors'];
+  var cats = Object.keys(groups).sort(function(a, b){
+    var ta = top.indexOf(a.split(' ·')[0]), tb = top.indexOf(b.split(' ·')[0]);
+    if (ta !== tb) return ta - tb;
+    return a.localeCompare(b);
+  });
+  cats.forEach(function(cat){
+    var rows = [];
+    groups[cat].forEach(function(g){
+      g.L.w.forEach(function(w){
+        if (!filter || (w.en + ' ' + w.tr + ' ' + w.he + ' ' + (w.mn || '')).toLowerCase().indexOf(filter) > -1)
+          rows.push({w:w, day:lessonDayOf[g.i]});
+      });
+    });
+    if (!rows.length) return;
+    any = true;
+    h += '<div class="catblock"><h3>' + esc(cat) + '</h3><div class="cmeta">' + rows.length + ' words</div><div class="rows">' +
+      rows.map(function(r){
+        return '<div class="row"><div class="r-he he">' + esc(r.w.he) + '</div>' +
+               '<div class="r-en">' + esc(r.w.en) + '</div>' +
+               '<div class="r-tr">' + esc(r.w.tr) + (r.day ? ' &middot; day ' + r.day : '') + '</div></div>';
+      }).join('') + '</div></div>';
+  });
+  if (!any) h += '<p class="empty">Nothing matches &ldquo;' + esc(filter) + '&rdquo;.</p>';
+  document.getElementById('view-browse').innerHTML = h;
+  var q = document.getElementById('q');
+  if (q){
+    q.addEventListener('input', function(){ var v = this.value; renderBrowse(v); var n = document.getElementById('q'); n.focus(); n.setSelectionRange(v.length, v.length); });
+  }
+}
+
+/* ---------------- wiring ---------------- */
+function setView(v){
+  view = v; state.view = v; save();
+  document.querySelectorAll('.tab').forEach(function(t){ t.setAttribute('aria-selected', t.dataset.view === v); });
+  document.querySelectorAll('.view').forEach(function(s){ s.classList.toggle('on', s.id === 'view-' + v); });
+  document.querySelector('.daynav').style.visibility = (v === 'today') ? 'visible' : 'hidden';
+  document.getElementById('quizctrl').style.visibility = (v === 'today') ? 'visible' : 'hidden';
+  if (v === 'plan') renderPlan();
+  if (v === 'browse') renderBrowse('');
+}
+function setDay(n){
+  cur = Math.max(1, Math.min(DAYS.length, n));
+  state.day = cur; save();
+  renderToday();
+  window.scrollTo({top:0, behavior:'instant'});
+}
+function setQuiz(q){
+  quiz = q; state.quiz = q; save();
+  document.body.classList.remove('quiz-he', 'quiz-en');
+  if (q !== 'off') document.body.classList.add('quiz-' + q);
+  document.querySelectorAll('#quizctrl button').forEach(function(b){ b.classList.toggle('on', b.dataset.q === q); });
+  document.querySelectorAll('.revealed').forEach(function(e){ e.classList.remove('revealed'); });
+}
+
+document.querySelectorAll('.tab').forEach(function(t){
+  t.addEventListener('click', function(){ setView(t.dataset.view); });
+});
+document.querySelectorAll('#quizctrl button').forEach(function(b){
+  b.addEventListener('click', function(){ setQuiz(b.dataset.q); });
+});
+document.getElementById('prev').addEventListener('click', function(){ setDay(cur - 1); });
+document.getElementById('next').addEventListener('click', function(){ setDay(cur + 1); });
+document.getElementById('daybox').addEventListener('change', function(){ setDay(parseInt(this.value, 10) || 1); });
+document.addEventListener('click', function(e){
+  var dot = e.target.closest('[data-day]');
+  if (dot){ setDay(parseInt(dot.dataset.day, 10)); if (view !== 'today') setView('today'); return; }
+  if (quiz !== 'off'){
+    var c = e.target.closest('.card, .row');
+    if (c) c.classList.toggle('revealed');
+  }
+});
+document.addEventListener('keydown', function(e){
+  if (e.target.tagName === 'INPUT') return;
+  if (e.key === 'ArrowLeft') setDay(cur - 1);
+  if (e.key === 'ArrowRight') setDay(cur + 1);
+});
+
+var rst = document.getElementById('reset');
+if (rst) rst.addEventListener('click', function(){
+  if (!confirm('Clear all saved progress? This wipes every day you have marked done and cannot be undone.')) return;
+  doneSet = {};
+  state = {day:1, quiz:'off', view:'today', done:[]};
+  save();
+  setQuiz('off');
+  setDay(1);
+  setView('today');
+});
+
+setQuiz(quiz);
+setDay(cur);
+setView(view);
+</script>
